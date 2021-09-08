@@ -9,6 +9,7 @@ import static org.mockito.Mockito.*;
 import edu.iis.mto.coffee.machine.*;
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -49,7 +50,7 @@ class CoffeeMachineTest {
         coffeeMachine = new CoffeeMachine(coffeeGrinder, milkProvider, coffeeReceipes);
         SAMPLE_WATER_AMOUNTS.put(CoffeeSize.DOUBLE, 2);
     }
-    
+
 
     @Test
     void shouldSetErrorStatusWhenRecipeIsUnknown(){
@@ -66,27 +67,38 @@ class CoffeeMachineTest {
 
     @Test
     void whenCoffeeWithMilkReceipeShouldBeCheckedFourTimes(){
-
+        when(coffeeGrinder.grind(any(CoffeeSize.class))).thenReturn(true);
+        when(coffeeReceipes.getReceipe(any(CoffeeType.class))).thenReturn(SAMPLE_RECEPIE_WITH_MILK);
+        coffeeMachine.make(SAMPLE_COFFEE_ORDER);
+        verify(coffeeReceipes, times(4)).getReceipe(any(CoffeeType.class));
     }
 
-    @Test
-    void throwExceptionWhenGrinderReturnFalse(){
-
-    }
-
-    @Test
-    void shouldNotInvokeMilkProviderWhenThereIsNoMilk(){
-
+    @Disabled  //yyy kod nie wyrzuca wyjatku jak mlynek zwroci false
+    void setErrorStatusWhenGrinderReturnFalse(){
+        when(coffeeReceipes.getReceipe(any(CoffeeType.class))).thenReturn(SAMPLE_RECEPIE_WITHOUT_MILK);
+        when(coffeeGrinder.grind(any(CoffeeSize.class))).thenReturn(false);
+        assertEquals(Status.ERROR, coffeeMachine.make(SAMPLE_COFFEE_ORDER).getStatus());
     }
 
     @Test
     void shouldNotInvokeMilkProviderWhenMilkIisNotInTheReceipe(){
-
+        when(coffeeReceipes.getReceipe(any(CoffeeType.class))).thenReturn(SAMPLE_RECEPIE_WITHOUT_MILK);
+        when(coffeeGrinder.grind(any(CoffeeSize.class))).thenReturn(true);
+        coffeeMachine.make(SAMPLE_COFFEE_ORDER);
+        verifyNoInteractions(milkProvider);
     }
 
     @Test
     void shouldReturnCoffeeWithCorrectAmountOfMilkAndWater() {
-
+        int expectedMilkAmount = SAMPLE_RECEPIE_WITH_MILK.getMilkAmount();
+        int expectedWaterAmount = SAMPLE_WATER_AMOUNTS.get(SAMPLE_COFFEE_ORDER.getSize());
+        when(coffeeGrinder.grind(any(CoffeeSize.class))).thenReturn(true);
+        when(coffeeReceipes.getReceipe(any(CoffeeType.class))).thenReturn(SAMPLE_RECEPIE_WITH_MILK);
+        when(milkProvider.pour(any(Integer.class))).thenReturn(expectedMilkAmount);
+        coffeeMachine.make(SAMPLE_COFFEE_ORDER);
+        Coffee coffee = coffeeMachine.make(SAMPLE_COFFEE_ORDER);
+        assertEquals(expectedMilkAmount, coffee.getMilkAmout());
+        assertEquals(expectedWaterAmount, coffee.getWaterAmount());
     }
 
 
