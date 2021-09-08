@@ -15,4 +15,38 @@ class CoffeeMachineTest {
         MatcherAssert.assertThat(true, equalTo(true));
     }
 
+    @Test
+    void shouldThrowExceptionWhenReceipeIsUnknown(){
+
+    }
+    @Test
+    void whenCoffeeWithoutMilkReceipeShouldBeCheckedThreeTimes(){
+
+    }
+
+    @Test
+    void whenCoffeeWithMilkReceipeShouldBeCheckedFourTimes(){
+
+    }
+
+    @Test
+    void throwExceptionWhenGrinderReturnFalse(){
+
+    }
+
+    @Test
+    void shouldNotInvokeMilkProviderWhenThereIsNoMilk(){
+
+    }
+
+    @Test
+    void shouldNotInvokeMilkProviderWhenMilkIisNotInTheReceipe(){
+
+    }
+
+    @Test
+    void shouldReturnCoffeeWithCorrectAmountOfMilkAndWater() {
+    }
+
+
 }
