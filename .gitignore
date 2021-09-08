@@ -1,0 +1,10 @@
+
+testsReactor/.idea/workspace.xml
+testsReactor/.idea/vcs.xml
+testsReactor/.idea/misc.xml
+testsReactor/.idea/modules.xml
+testsReactor/.idea/libraries/Maven__org_objenesis_objenesis_2_6.xml
+testsReactor/.idea/libraries/Maven__org_opentest4j_opentest4j_1_2_0.xml
+testsReactor/.idea/libraries/Maven__org_mockito_mockito_junit_jupiter_3_3_3.xml
+*.xml
+testsReactor/testsReactor.iml
